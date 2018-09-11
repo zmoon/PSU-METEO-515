@@ -95,8 +95,6 @@ amo_us_n_size = amo_us_n.size
 amo_us_n_min = amo_us_n.min()
 amo_us_n_max = amo_us_n.max()
 
-x_kde = np.linspace(-3.9, 3.9, 400)
-
 def calcHist(h_bw=0.1):
     """ """
     #> create bins, spaced evenly
@@ -127,13 +125,29 @@ def calcKDE(kd_bw=0.1):
     
 #> for NAO (not re-normalized)
 
+x_kde = np.linspace(-3.9, 3.9, 400)
+
+f_kde = 'lut_kde.csv'
+f_hist = 'lut_hist.csv'
+
 dbw = 0.002
 bws = np.arange(0.01, 2.0+dbw, dbw)
 
+kdes = np.zeros((bws.size, x_kde.size))  # pre-allocate
+counts_hists = []
+x_hists = []
 for i, bw in enumerate(bws):
-
-    counts_hist, x_hist = calcHist(bw)
     
+    counts_hist, x_hist = calcHist(bw)   
+    counts_hists.append(counts_hist)
+    x_hists.append(x_hist)
     
     kde = calcKDE(bw)
+    kdes[i,:] = kde
+
+
+#%% write LUTs
+
+kdes[kdes < 1e-10] = 0
+np.savetxt(f_kde, kdes, fmt='%.4e', delimiter=',')
 

@@ -30,6 +30,16 @@ from statsmodels.nonparametric.kde import KDEUnivariate
 #plt.close('all')
 
 
+#%% load LUTs
+
+
+x_kde = np.linspace(-3.9, 3.9, 400)  # should load from file...
+dbw = 0.002
+bws = np.arange(0.01, 2.0+dbw, dbw)
+kdes = np.loadtxt('lut_kde.csv', delimiter=',')
+
+
+
 
 #%% bokeh
 
@@ -47,43 +57,51 @@ f.grid.minor_grid_line_color = '#eeeeee'
 
 
 #> initial data
-bw0 = 0.06
+bw0 = 0.07
 
-counts_hist, x_hist = calcHist(bw0)
-source_hist = ColumnDataSource({'x': x_hist, 'counts': counts_hist, 'bw': bw0*np.ones(x_hist.shape)})
-#source_hist2 = ColumnDataSource({'x': x_hist, 'counts': counts_hist})
+#counts_hist, x_hist = calcHist(bw0)
+#source_hist = ColumnDataSource({'x': x_hist, 'counts': counts_hist, 'bw': bw0*np.ones(x_hist.shape)})
 
-kde = calcKDE(bw0)
-source_kde = ColumnDataSource({'x': x_kde, 'density': kde})
+source_kde = ColumnDataSource({'all_kdes': kdes, 
+                               'x': x_kde, 'bws': bws, 
+                               'kde_curr': kdes[2,:],
+                               })
+
 
 #f.line(x='x', y='counts', alpha=0.3, color='blue', 
 #       legend='', source=source_hist)
-f.vbar(x='x', top='counts', width='bw',
-       alpha=0.9, color=hist_color,   
-       legend='normalized counts', source=source_hist)
+#f.vbar(x='x', top='counts', width='bw',
+#       alpha=0.9, color=hist_color,   
+#       legend='normalized counts', source=source_hist)
 
-f.line(x='x', y='density', alpha=0.85, color=kde_color, line_width=3,  
+f.line(x='x', y='kde_curr', alpha=0.85, color=kde_color, line_width=3,  
        legend='KDE', source=source_kde)
 
 
 #> create slider
-bw_slider = Slider(start=0.01, end=2.0, step=0.005, value=bw0, format='0[.]000', 
+bw_slider_callback = CustomJS(args=dict(source=source_kde), code="""
+  let data = source.data;
+  let bw = cb_obj.value;
+  console.log('JS activated')
+  
+  let all_kdes = data['all_kdes'];
+  let bws = data['bws'];
+  let kde_curr = data['kde_curr'];
+  
+  for (let i = 0; i < bws.length; i++) {
+    console.log(i)
+    if (bws[i] === bw) {
+      break;
+    }
+  kde_curr = all_kdes[i,:];
+  }
+  source.change.emit();
+""")
+
+bw_slider = Slider(start=0.01, end=2.0, step=dbw, value=bw0, format='0[.]000', 
                    title='bin/band-width', width=500)
+bw_slider.js_on_change('value', bw_slider_callback)
 
-def bw_slider_callback(attr, old, new):
-    """ """
-    bw = new
-    
-    counts_hist, x_hist = calcHist(bw)
-    new_hist = {'x': x_hist, 'counts': counts_hist, 'bw': bw*np.ones(x_hist.shape)}
-    
-    kde = calcKDE(bw)
-    new_kde = {'x': x_kde, 'density': kde}
-    
-    source_hist.data = new_hist
-    source_kde.data = new_kde
-
-bw_slider.on_change('value', bw_slider_callback)
 
 #l = layout([[f], [bw_slider]])
 l = column(f, bw_slider)

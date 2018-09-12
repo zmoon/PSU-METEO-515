@@ -20,3 +20,8 @@ and AMO (Atlantic Multidecadal Oscillation) through:
 
 Or view the notebook here on GH. 
 
+### KDE/histogram interactive plot using Bokeh
+There are two working versions of this inside subdirectory 'kde-slider': 
+
+* Bokeh app version: requires a running Bokeh server (`bokeh serve --show kde-slider_bokeh.py` to start the app
+* JS callback version: uses a LUT and JS callbacks (as opposed to Python), so can be run in the web browser. 

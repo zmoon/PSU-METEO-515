@@ -128,7 +128,7 @@ def calcKDE(kd_bw=0.1):
 x_kde = np.linspace(-3.9, 3.9, 400)
 
 f_kde = 'lut_kde.csv'
-f_hist = 'lut_hist.csv'
+#f_hist = 'lut_hist.csv'
 
 dbw = 0.002
 bws = np.arange(0.01, 2.0+dbw, dbw)
@@ -136,6 +136,8 @@ bws = np.arange(0.01, 2.0+dbw, dbw)
 kdes = np.zeros((bws.size, x_kde.size))  # pre-allocate
 counts_hists = []
 x_hists = []
+#counts_hists = np.full()
+#x_hists = []
 for i, bw in enumerate(bws):
     
     counts_hist, x_hist = calcHist(bw)   
@@ -148,6 +150,29 @@ for i, bw in enumerate(bws):
 
 #%% write LUTs
 
-kdes[kdes < 1e-10] = 0
+cutoff = 1e-10
+
+kdes[kdes < cutoff] = 0
 np.savetxt(f_kde, kdes, fmt='%.4e', delimiter=',')
+
+#np.savetxt('hist, kdes, fmt='%.4e', delimiter=',')
+#np.savetxt(f_kde, kdes, fmt='%.4e', delimiter=',')
+
+maxbincount = counts_hists[0].size
+#fill = ','.join(['-99' for _ in range(maxbincount)])  # could probably use numpy savetxt with fill value..
+fill = ['-99' for _ in range(maxbincount)]
+counts_hist[counts_hists < cutoff] = 0
+with open('hist_counts.txt', 'w') as f:
+    lines = []
+    for l in counts_hists:
+        fill_l = ','.join(fill[:maxbincount-len(l)+1])
+        lines.append(','.join(['{:.4e}'.format(x) for x in l]) + ','+ fill_l + '\n')
+    f.writelines(lines)
+
+with open('hist_bincenters.txt', 'w') as f:
+    lines = []
+    for l in x_hists:
+        fill_l = ','.join(fill[:maxbincount-len(l)+1])
+        lines.append(','.join(['{:.4e}'.format(x) for x in l]) + ','+ fill_l + '\n')
+    f.writelines(lines)
 

@@ -1,194 +1,93 @@
-
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 """
 
 
-
+@author: zmoon
 """
 
-from __future__ import division
-import datetime as dt
+from __future__ import division, print_function
+#import datetime as dt
 
+from colorama import init, Fore
+#init(autoreset=True)  # using init somehow turns off color output in the Spyder IPython console...
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.stats as ss
 #import statsmodels.api as sm
-from statsmodels.robust.scale import mad
+#from statsmodels.robust.scale import mad
 
+plt.close('all')
+plt.style.use('seaborn-darkgrid')
 
-def calc_median(x):
-    """ """
-    #x.sort_values(inplace=True)  # for pd Series; but indices follow...
-    x = np.array(x)
-    x.sort()
-    n = x.size
-    
-    if n % 2 == 0:
-        i1 = int(n/2)
-        i2 = int((n+1)/2)
-        median = (x[i1]+x[i2]) / 2
-    else:
-        i = int((n+1)/2)
-        median = x[i]
-
-    return median
-
-
-def calc_std(x):
-    """Calculate corrected sample standard deviation $s$"""
-    n = x.size
-    xbar = x.mean()
-
-    ssqd = 1/(n+1)*np.sum((x-xbar)**2)
-    s = np.sqrt(ssqd)
-
-    return s
-
-    
-def calc_iqr(x):
-    """Calculate IQR using fn calc_median"""
-    #x.sort_values(inplace=True)
-    x = np.array(x)
-    x.sort()
-    n = x.size
-    
-    if n % 2 == 0:
-        i = int(n/2)
-        x1 = x[:i]
-        x2 = x[i:]
-    else:
-        i = int((n+1)/2)
-        x1 = x[:i]
-        x2 = x[(i-1):]
-
-    q1 = calc_median(x1)
-    q3 = calc_median(x2)
-
-    return q3 - q1
-
-
-def calc_iqr_pd(x):
-    """Calculate IQR using Pandas quantile df method"""
-    try:
-        q1 = x.quantile(0.25)
-        q3 = x.quantile(0.75)
-        return q3 - q1
-    
-    except AttributeError:
-        print('requires pd.Series input')
-
-
-
-def calc_mad(x):
-    """Calculate median absolute deviation using fn calc_median
-
-    MAD := the median of the absolute deviations from the data's median
-    """
-    #x.sort_values()
-    x_median = calc_median(x)
-
-    absdevs = np.abs(x-x_median)
-    
-    return calc_median(absdevs)
-
-
-def calc_skew(x):
-    """Calculate skewness using fn calc_std"""
-    n = x.size
-    xbar = x.mean()
-    m3 = 1/n * np.sum( (x-xbar)**3 )  # 3rd moment
-    s3 = calc_std(x)**3
-
-    return m3/s3
-
-
-def summary_stats(x, save_table=False):
-    """Create descriptive stats table for input np array or pd series x
-    save table if desired
-    """
-
-    mean = x.mean()  # using array method (Numpy) / Series method (Pandas)
-    assert(np.isclose( mean, x.sum()/x.size ))
-
-    median = x.median()  # using array method (Numpy) / Series method (Pandas)
-    assert(np.isclose( median, calc_median(x) ))
-
-    std = x.std()  # using array method (Numpy) / Series method (Pandas)
-    assert(np.isclose( std, calc_std(x) ))
-
-    iqr = ss.iqr(x)  # using Scipy Stats
-    assert(np.isclose( iqr, calc_iqr(x) ))
-    assert(np.isclose( iqr, calc_iqr_pd(x) ))
-
-    # c is a normalization constant
-    # that we only if we are relating MAD to the standard deviation
-    # https://en.wikipedia.org/wiki/Median_absolute_deviation#Relation_to_standard_deviation
-    mad = mad(x, c=1)  # using StatsModels (Pandas only has *mean* absolute dev)
-    assert(np.isclose( mad, calc_mad(x) ))
-    
-    skew = ss.skew(x)  # using Scipy Stats; Series also have skew() method
-    assert(np.isclose( skew, calc_skew(x) ))
-    
-
-
-
-# ------------------------------------------------------------------------------
-# part 1
 
 #%% load data
 
-dfname = 'SC_data.xlsx'#'./data/SC_data.xlsx'
+dfname = './data/SC_data.xlsx'
 
 convert_dateint = lambda d: pd.to_datetime(str(d))
 
 df = pd.read_excel(dfname,
     header=None, 
-#    index_col=0, 
-#    names=['Tmin', 'Tmax', 'PCP', '5', '6'],
-    names=['date', 'Tmin', 'Tmax', 'PCP', '5', '6'],
+    names=['date', 'Tmax', 'Tmin', 'PCP', '5', '6'],
     converters={0: convert_dateint},
     )
+df.set_index('date', inplace=True)
 
-#df.index = df.index.astype
-#df.date = pd.to_datetime(df.date.astype(str))
 
-#> omit 2017??
-
+#%% process data
 
 #> correct for missing values
 
-varnames = ['Tmin', 'Tmax', 'PCP']
+varnames = ['Tmax', 'Tmin', 'PCP']
 for varname in varnames:  # probably can do without loop
-    df.loc[df[varname] == -99.0] = np.nan
+    df[varname].loc[df[varname] == -99.0] = np.nan  # the missing value tag is -99
 
-df.loc[df.PCP < 0] = np.nan
+df.PCP.loc[df.PCP < 0] = np.nan  # trace precip is given the value -1
 
-df.dropna(inplace=True)
+df_dropna = df.dropna()  # this drops entire rows that have any nans in them...
+
+data = {}  # here drop nans from columns individually
+for varname in varnames:
+#    data[varname] = df[varname].dropna()  # gives SettingWithCopyWarning
+    data[varname] = df.loc[:,varname].dropna()  # apparently this is the preferred method?: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+                                                # maybe should also do .dropna(inplace=True) in a separate line
+#> analyze missing/trace data fraction
+print('NaN counts:')
+print(df.isna().apply(np.count_nonzero))
+fmt = '  {c1:s}{{:>8s}}: {c2:s}{{:.2g}}'.format(c1=Fore.GREEN, c2=Fore.BLUE)
+print('\nMissing data fraction:')
+for k, v in data.items():
+    print(fmt.format(k, 1-v.size/df.shape[0]))
+print(fmt.format('any var', 1-df_dropna.size/df.size))
+
+#> omit 2017?? to be fair in the annual means and such
+#  but we do have all the way to Nov 20th, so think will leave it in...
 
 
 #%% plot data time series
+#   for sanity check
 
-f1, [a1, a2, a3] = plt.subplots(3, 1)
+f0, aa = plt.subplots(3, 1, sharex=True)
 
-df.plot(x='date', y='Tmin', ax=a1) 
-df.plot(x='date', y='Tmax', ax=a2) 
-df.plot(x='date', y='PCP', ax=a3) 
-
-
-#> plot boxplots
-
-#f2, a1 = plt.subplots(1, 1)
-
+for i, k in enumerate(varnames):
+    df.plot(y=k, ax=aa.flat[i])  # the raw data, but with missing values marked with nan
+ 
 
 #%% a) hist + Gaussian fit
 #      for annual *average* Tmax and PCP
 
 #> compute annual averages
-#df_annual_means = df.groupby(df.date.dt.year).transform('mean')  # does not reduce row number
-df.index = df.date
-df_annual_means = df.groupby(pd.TimeGrouper('A')).mean()
+#df_annual_means = df.groupby(df.index.dt.year).transform('mean')  # does not reduce row number
+#df_annual_means = df.groupby(pd.TimeGrouper('A')).mean()  # TimeGrouper is deprecated
+df_annual_means = df.groupby(pd.Grouper(freq='A')).mean()  # DataFrame.mean skips nans by default
+df_annual_means2 = df.groupby(pd.Grouper(freq='A')).apply(np.nanmean)
 
-f1, aa = plt.subplots(1, 2, num='annual_mean')
+deg_symbol = u'\u00B0'
+pdf_color = '#ea4800'
+
+f1, aa = plt.subplots(1, 2, figsize=(6, 3), num='annual_mean')
 
 names = ['Tmax', 'PCP']
 for i, name in enumerate(names):
@@ -196,25 +95,43 @@ for i, name in enumerate(names):
     ax = aa[i]
     ds = df_annual_means[name]
     
-    xplot = np.linspace(ds.min(), ds.max(), 400)
+    xplot = np.linspace(ds.min()*0.98, ds.max()*1.02, 400)
     
-    ax.hist(ds, bins=30, normed=True)
-#    df_annual_means.hist(name, density=True, ax=ax)
+    ax.hist(ds, bins=13, density=True, alpha=0.7, ec='0.35', lw=0.25, label=None)
     
     xbar = ds.mean()
     s = ds.std()
-    ax.plot(xplot, ss.norm.pdf(xplot, xbar, s), '-', lw=2)
+    ax.plot(xplot, ss.norm.pdf(xplot, xbar, s), '-', c=pdf_color, alpha=0.85, lw=2, 
+            label='$\mathcal{{N}}({:.2g}, {:.2g})$'.format(xbar, s**2))
     
-    ax.set_title(name)
+    ax.set_title('Annual *mean* daily '+name)
+    ax.text(0.98, 0.98, '$N={:d}$'.format(ds.size), va='top', ha='right', transform=ax.transAxes)
     
+    ax.legend(loc='upper left')
+
+aa[0].set_xlabel(deg_symbol+'F')
+aa[0].set_ylabel('density')
+aa[1].set_xlabel('inches')
+
+f1.tight_layout()
+
+
+#%% Gumbel def
+
+def myGumbel_pdf(x, loc=0, scale=1):
+    """Calculate pdf for Gumbel dist at x
+    loc:   location/shift param zeta
+    scale: scale param beta
+    """
+    return 1/scale * np.exp( -np.exp(-(x-loc)/scale) - (x-loc)/scale)
 
 
 #%% b) hist + Gumbel fit
 #      for annual *maximum* Tmax and PCP
 
-df_annual_maxs = df.groupby(pd.TimeGrouper('A')).max()
+df_annual_maxs = df.groupby(pd.Grouper(freq='A')).max()
 
-f2, aa = plt.subplots(1, 2, num='annual_max')
+f2, aa = plt.subplots(1, 2, figsize=(6, 3), num='annual_max')
 
 names = ['Tmax', 'PCP']
 for i, name in enumerate(names):
@@ -224,22 +141,36 @@ for i, name in enumerate(names):
     
     xplot = np.linspace(ds.min(), ds.max(), 400)
     
-    ax.hist(ds, bins=26, normed=True)
-#    df_annual_means.hist(name, density=True, ax=ax)
+    ax.hist(ds, bins=None, density=True, alpha=0.7, ec='0.35', lw=0.25, label=None)
     
     xbar = ds.mean()
     s = ds.std()
-    ax.plot(xplot, ss.gumbel_r.pdf(xplot, xbar, s), '-', lw=2)
+    beta_hat = s*np.sqrt(6)/np.pi
+    zeta_hat = xbar - np.euler_gamma*beta_hat
+    ssfit = ss.gumbel_r.pdf(xplot, zeta_hat, beta_hat)
+    myfit = myGumbel_pdf(xplot, zeta_hat, beta_hat)
+    assert( np.allclose(ssfit, myfit) )  # our Gumbel formula gives same results as gumbel_r, not gumbel_l...
     
-    ax.set_title(name)
+    s = 'Gumbel\n$\zeta = {:.2g}$,\n' + r'$\beta = {:.2g}$'
+    ax.plot(xplot, myfit, '-', c=pdf_color, alpha=0.85, lw=2, 
+            label=s.format(zeta_hat, beta_hat))
+#    ax.plot(xplot, myfit, '-', c='g', alpha=0.85, lw=2, label='my Gumbel')
     
+    ax.set_title('Annual *maximum* daily '+name)
+    ax.text(0.98, 0.98, '$N={:d}$'.format(ds.size), va='top', ha='right', transform=ax.transAxes)    
 
+    ax.legend(loc='center right')
+
+aa[0].set_xlabel(deg_symbol+'F')
+aa[0].set_ylabel('density')
+aa[1].set_xlabel('inches')
+
+f2.tight_layout()
 
 
 #%% c) q-q plot of data vs Gumbel fits
 
-f3, aa = plt.subplots(1, 2, num='annua_max_q-q_gumbel')
-
+f3, aa = plt.subplots(1, 2, figsize=(6, 3), num='annual_max_q-q_gumbel')
 
 names = ['Tmax', 'PCP']
 for i, name in enumerate(names):
@@ -249,5 +180,7 @@ for i, name in enumerate(names):
 
     ss.probplot(ds, dist=ss.gumbel_r, plot=ax)
     
-    ax.set_title(name)
+    ax.set_title('Annual *maximum* daily '+name)
+    
+f3.tight_layout()
 

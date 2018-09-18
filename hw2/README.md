@@ -6,11 +6,11 @@ We look at distributions of annual mean and maximum daily maximum temperature (T
 
 [Interact with the notebook via binder](https://mybinder.org/v2/gh/zmoon92/PSU-METEO-515/master?filepath=hw2%2Fhw2p1.ipynb).
 
-Or view the notebook here on GH. 
+Or view the notebook here on GH, or on [nbviewer](https://nbviewer.jupyter.org/github/zmoon92/PSU-METEO-515/blob/master/hw2/hw2p1.ipynb). 
 
 ### Part 2 – Rain drop size distributions (DSDs)
 We investigate two simple fits to a sample DSD.
 
 [Interact with the notebook via binder](https://mybinder.org/v2/gh/zmoon92/PSU-METEO-515/master?filepath=hw2%2Fhw2p2.ipynb).
 
-Or view the notebook here on GH. 
+Or view the notebook here on GH, or on [nbviewer](https://nbviewer.jupyter.org/github/zmoon92/PSU-METEO-515/blob/master/hw2/hw2p2.ipynb).

@@ -1,4 +1,4 @@
-## hw1
+## hw2
 In this hw, we fit some parametric distributions to data.
 
 ### Part 1 – State College weather station data
@@ -14,4 +14,3 @@ We investigate two simple fits to a sample DSD.
 [Interact with the notebook via binder](https://mybinder.org/v2/gh/zmoon92/PSU-METEO-515/master?filepath=hw2%2Fhw2p2.ipynb).
 
 Or view the notebook here on GH. 
-

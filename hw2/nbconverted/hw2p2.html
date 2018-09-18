@@ -11858,18 +11858,14 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="a)-DSD-at-chosen-minute">a) DSD at chosen minute<a class="anchor-link" href="#a)-DSD-at-chosen-minute">&#182;</a></h2><p>Here, we choose the time at which the sum of the larger bins is maximized.</p>
 <p>The simpler Marshall–Palmer fit that we will use for our binned drop number density vs. drop diameter data has the form
-$$
 \begin{equation}
 n(D) = n_0 e^{-\lambda D}
 \end{equation}
-$$
 where $n(D)$ is the number density of raindrops of size $D$ (technically in the size range $[D, D+dD]$), $n_0$ is called the intercept parameter, and $\lambda$ is called the slope parameter. $n(D)$ is also called the drop size distribution (function).</p>
 <h2 id="b)-More-complex-fit">b) More complex fit<a class="anchor-link" href="#b)-More-complex-fit">&#182;</a></h2><p>The more complex fit we will use has the form
-$$
 \begin{equation}
 n(D) = n_0 D^\mu e^{-\lambda D}
 \end{equation}
-$$
 which has an added 3rd parameter, $\mu$. Note that the $k$-th moment of the drop size distribution $n(D)$ is given by $M_k = \int_0^\infty n(D) \, D^k \, dD$</p>
 <div class="alert alert-info">
 
@@ -11942,10 +11938,10 @@ which has an added 3rd parameter, $\mu$. Note that the $k$-th moment of the drop
 
 
 
-<div id="7b429210-d223-49ab-bac0-647c12157941"></div>
+<div id="2bda62b3-304e-4a69-acfb-57ba3b4153ac"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#7b429210-d223-49ab-bac0-647c12157941');
+var element = $('#2bda62b3-304e-4a69-acfb-57ba3b4153ac');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -12751,73 +12747,19 @@ if (IPython.notebook.kernel != null) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Save-figures-locally">Save figures locally<a class="anchor-link" href="#Save-figures-locally">&#182;</a></h2><p>Probably a silly thing for a Jupyter Notebook to do but whatever</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="kd">var</span> <span class="nx">kernel</span> <span class="o">=</span> <span class="nx">IPython</span><span class="p">.</span><span class="nx">notebook</span><span class="p">.</span><span class="nx">kernel</span><span class="p">;</span>  <span class="c1">// https://stackoverflow.com/a/23619544</span>
-<span class="kd">var</span> <span class="nx">thename</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;notebook_name&quot;</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">command</span> <span class="o">=</span> <span class="s2">&quot;theNotebookName = &quot;</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="nx">thename</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">;</span>
-<span class="nx">kernel</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">command</span><span class="p">);</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="94b92c9f-925c-4598-91cf-bdab663aa269"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#94b92c9f-925c-4598-91cf-bdab663aa269');
-var kernel = IPython.notebook.kernel;  // https://stackoverflow.com/a/23619544
-var thename = window.document.getElementById("notebook_name").innerHTML;
-var command = "theNotebookName = " + "'"+thename+"'";
-kernel.execute(command);
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#&gt; save figs; requires that the &#39;figs&#39; dir exists..</span>
+<p>Put the code in a cell and run it to save the figs to local dir 'figs'.</p>
+<div class="highlight"><pre><span></span><span class="c1">#&gt; save figs; requires that the &#39;figs&#39; dir exists..</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_fignums</span><span class="p">():</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./figs/{:s}_{:s}.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">theNotebookName</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">get_label</span><span class="p">()),</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./figs/hw2p2_{:s}.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_label</span><span class="p">()),</span> 
         <span class="n">transparent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
         <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
         <span class="p">)</span>
+<span class="err">`</span>
 </pre></div>
 
 </div>
 </div>
-</div>
-
 </div>
     </div>
   </div>

@@ -11965,10 +11965,10 @@ Missing data fraction:
 
 
 
-<div id="faf8ca91-013d-44b6-a8fd-0a6f1fdf3cb4"></div>
+<div id="7390cf6f-ff72-47c6-851b-ecd182833aae"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#faf8ca91-013d-44b6-a8fd-0a6f1fdf3cb4');
+var element = $('#7390cf6f-ff72-47c6-851b-ecd182833aae');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -12825,10 +12825,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="dd7db5e4-867e-4342-93c2-06e1624d2ab4"></div>
+<div id="7448a6ff-8983-4721-a608-ce0c0929b8b4"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#dd7db5e4-867e-4342-93c2-06e1624d2ab4');
+var element = $('#7448a6ff-8983-4721-a608-ce0c0929b8b4');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -13707,10 +13707,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="da94bc02-4d3f-4ff3-89f2-fa40aff40372"></div>
+<div id="f482d486-03f7-498d-ba20-71b7fc7a31bc"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#da94bc02-4d3f-4ff3-89f2-fa40aff40372');
+var element = $('#f482d486-03f7-498d-ba20-71b7fc7a31bc');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -14559,10 +14559,10 @@ if (IPython.notebook.kernel != null) {
 
 
 
-<div id="8c9b8d59-a0f0-4971-a7b4-6e147e7c453e"></div>
+<div id="bb7ed311-6fe2-453f-8f37-e5162efe255b"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#8c9b8d59-a0f0-4971-a7b4-6e147e7c453e');
+var element = $('#bb7ed311-6fe2-453f-8f37-e5162efe255b');
 /* Put everything inside the global mpl namespace */
 window.mpl = {};
 
@@ -15368,64 +15368,11 @@ if (IPython.notebook.kernel != null) {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Save-figures-locally">Save figures locally<a class="anchor-link" href="#Save-figures-locally">&#182;</a></h2><p>Probably a silly thing for a Jupyter Notebook to do but whatever</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="o">%%</span><span class="nx">javascript</span>
-<span class="kd">var</span> <span class="nx">kernel</span> <span class="o">=</span> <span class="nx">IPython</span><span class="p">.</span><span class="nx">notebook</span><span class="p">.</span><span class="nx">kernel</span><span class="p">;</span>  <span class="c1">// https://stackoverflow.com/a/23619544</span>
-<span class="kd">var</span> <span class="nx">thename</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;notebook_name&quot;</span><span class="p">).</span><span class="nx">innerHTML</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">command</span> <span class="o">=</span> <span class="s2">&quot;theNotebookName = &quot;</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="o">+</span><span class="nx">thename</span><span class="o">+</span><span class="s2">&quot;&#39;&quot;</span><span class="p">;</span>
-<span class="nx">kernel</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">command</span><span class="p">);</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-
-
-
-<div id="adb37678-2c97-4d03-bbc4-8f520c9a1432"></div>
-<div class="output_subarea output_javascript ">
-<script type="text/javascript">
-var element = $('#adb37678-2c97-4d03-bbc4-8f520c9a1432');
-var kernel = IPython.notebook.kernel;  // https://stackoverflow.com/a/23619544
-var thename = window.document.getElementById("notebook_name").innerHTML;
-var command = "theNotebookName = " + "'"+thename+"'";
-kernel.execute(command);
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#&gt; save figs; requires that the &#39;figs&#39; dir exists..</span>
+<p>Put the code in a cell and run it to save the figs to local dir 'figs'.</p>
+<div class="highlight"><pre><span></span><span class="c1">#&gt; save figs; requires that the &#39;figs&#39; dir exists..</span>
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_fignums</span><span class="p">():</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./figs/{:s}_{:s}.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">theNotebookName</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">get_label</span><span class="p">()),</span> 
+    <span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./figs/hw2p1_{:s}.pdf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">get_label</span><span class="p">()),</span> 
         <span class="n">transparent</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
         <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
         <span class="p">)</span>
@@ -15433,35 +15380,6 @@ kernel.execute(command);
 
 </div>
 </div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-12-8eb97f9292c2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">for</span> n <span class="ansi-green-fg">in</span> plt<span class="ansi-blue-fg">.</span>get_fignums<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>     f <span class="ansi-blue-fg">=</span> plt<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">(</span>n<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg">     f.savefig(&#39;./figs/{:s}_{:s}.pdf&#39;.format(theNotebookName, f.get_label()), 
-</span><span class="ansi-green-intense-fg ansi-bold">      5</span>         transparent<span class="ansi-blue-fg">=</span>False<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span>         bbox_inches<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;tight&#39;</span><span class="ansi-blue-fg">,</span> pad_inches<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0.05</span><span class="ansi-blue-fg">,</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;theNotebookName&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     </div>
   </div>

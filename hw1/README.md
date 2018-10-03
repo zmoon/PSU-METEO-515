@@ -7,7 +7,7 @@ We show the importance of removing missing and trace data from calculations of s
 
 [Interact with the notebook via binder](https://mybinder.org/v2/gh/zmoon92/PSU-METEO-515/master?filepath=hw1%2Fhw1p1.ipynb).
 
-Or view the notebook here on GH. 
+Or view the notebook here on GH.
 
 ### Part 2 – NAO and AMO
 We investigate the NAO (North Atlantic Oscillation) 
@@ -19,6 +19,8 @@ and AMO (Atlantic Multidecadal Oscillation) through:
 [Interact with the notebook via binder](https://mybinder.org/v2/gh/zmoon92/PSU-METEO-515/master?filepath=hw1%2Fhw1p2.ipynb).
 
 Or view the notebook here on GH. 
+
+**Note** that in the assignment description it says to use the time series of annual means for this part, but I did not do this. This allows for a larger N for the histograms. 
 
 ### KDE/histogram interactive plot using Bokeh
 There are two working versions of this inside subdirectory ['kde-slider'](./kde-slider): 
